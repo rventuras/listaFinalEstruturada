@@ -1,0 +1,159 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+
+typedef struct {
+    int codigo;
+    char descricao[100];
+    int quantidade;
+    float valor;
+} Produto;
+
+
+void inicializarLista(Produto** lista, int* tamanho) {
+    *lista = NULL;
+    *tamanho = 0;
+}
+
+
+void adicionarProduto(Produto** lista, int* tamanho) {
+    
+    *lista = (Produto*) realloc(*lista, (*tamanho + 1) * sizeof(Produto));
+
+    Produto novoProduto;
+    printf("Código: ");
+    scanf("%d", &novoProduto.codigo);
+    printf("Descrição: ");
+    scanf(" %[^\n]", novoProduto.descricao);
+    printf("Quantidade: ");
+    scanf("%d", &novoProduto.quantidade);
+    printf("Valor: ");
+    scanf("%f", &novoProduto.valor);
+
+    (*lista)[*tamanho] = novoProduto;
+    (*tamanho)++;
+    
+    
+}
+
+
+void gerarRelatorio(Produto* lista, int tamanho) {
+	printf("__________________________________________\n");
+    printf("| Código | Descrição | Quantidade | Valor|\n ");
+    
+    for (int i = 0; i < tamanho; i++) {
+        printf("%d   | %s        | %d         | %.2f\n",
+               lista[i].codigo, lista[i].descricao, lista[i].quantidade, lista[i].valor);
+    }
+    printf("\n");
+    
+}
+
+
+void consultarProduto(Produto* lista, int tamanho) {
+    int codigo;
+    printf("Digite o código: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < tamanho; i++) {
+        if (lista[i].codigo == codigo) {
+            printf("Código Valido:\n");
+            printf("Código: %d\n", lista[i].codigo);
+            printf("Descrição: %s\n", lista[i].descricao);
+            printf("Quantidade: %d\n", lista[i].quantidade);
+            printf("Valor: %.2f\n\n", lista[i].valor);
+            return;
+        }
+        
+        system ("cls");
+    }
+
+    printf("Código Invalido.\n\n");
+}
+
+
+void removerProduto(Produto** lista, int* tamanho) {
+    int codigo;
+    printf("Digite o código do produto: ");
+    scanf("%d", &codigo);
+    
+    system ("cls");
+
+    int indice = -1;
+    for (int i = 0; i < *tamanho; i++) {
+        if ((*lista)[i].codigo == codigo) {
+            indice = i;
+            break;
+        }
+    }
+
+    if (indice != -1) {
+       
+        for (int i = indice; i < *tamanho - 1; i++) {
+            (*lista)[i] = (*lista)[i + 1];
+        }
+
+        
+        *lista = (Produto*) realloc(*lista, (*tamanho - 1) * sizeof(Produto));
+
+        (*tamanho)--;
+        printf("Produto removido.\n\n");
+        
+        system ("cls");
+    } else {
+        printf("Código Invalido.\n\n");
+    }
+    
+    system ("cls");
+}
+
+int main() {
+	
+	setlocale(LC_ALL,"portuguese");
+    Produto* listaEstoque;
+    int tamanhoEstoque;
+    int opcao;
+
+    inicializarLista(&listaEstoque, &tamanhoEstoque);
+
+    do {
+        printf("__________________________________\n");
+        printf("| 1 - Cadastrar Produto          | \n");
+        printf("| 2 - Consultar Produto          | \n");
+        printf("| 3 - Gerar Relatório de Produtos| \n");
+        printf("| 4 - Remover Produto do Estoque | \n");
+        printf("| 0 - Sair                       | \n");
+        printf("|________________________________| \n ");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+    
+        system ("cls");
+        
+        switch (opcao) {
+            case 1:
+                adicionarProduto(&listaEstoque, &tamanhoEstoque);
+                break;
+            case 2:
+                consultarProduto(listaEstoque, tamanhoEstoque);
+                break;
+            case 3:
+                gerarRelatorio(listaEstoque, tamanhoEstoque);
+                break;
+            case 4:
+                removerProduto(&listaEstoque, &tamanhoEstoque);
+                break;
+            case 0:
+                printf("Saindo do programa...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+        
+        
+    } while (opcao != 0);
+
+    free(listaEstoque);
+
+    return 0;
+}
