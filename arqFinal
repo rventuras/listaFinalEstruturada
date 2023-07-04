@@ -1,3 +1,7 @@
+//Aluno: Rodrigo Boaventura da Silva
+//Ciência da Computação
+//Mat: UC22103134
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
