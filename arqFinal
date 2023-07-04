@@ -62,7 +62,7 @@ void consultarProduto(Produto* lista, int tamanho) {
 
     for (int i = 0; i < tamanho; i++) {
         if (lista[i].codigo == codigo) {
-            printf("Código Valido:\n");
+            printf("Código Valido!\n");
             printf("Código: %d\n", lista[i].codigo);
             printf("Descrição: %s\n", lista[i].descricao);
             printf("Quantidade: %d\n", lista[i].quantidade);
@@ -73,7 +73,7 @@ void consultarProduto(Produto* lista, int tamanho) {
         system ("cls");
     }
 
-    printf("Código Invalido.\n\n");
+    printf("Produto não existe.\n\n");
 }
 
 
